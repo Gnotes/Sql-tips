@@ -37,3 +37,63 @@ $
 INSERT INTO `Table_name` (`id`,`type`,`create_at`,`update_at`) VALUES (3,2,'2017-05-18 11:06:17','2017-05-18 11:06:17') 
 ON DUPLICATE KEY UPDATE `id`=VALUES(`id`), `type`=VALUES(`type`), `update_at`=VALUES(`update_at`);
 ```
+
+- `sql与(&)运算`
+
+[roles-and-permission](https://stackoverflow.com/questions/333620/best-practice-for-designing-user-roles-and-permission-system)  
+[MySql 运算符](http://www.cnblogs.com/emanlee/p/4592337.html)  
+
+示例：ACL(access control)计算，有如下表:
+
+### permission
+
+| bit | name |
+| --- | ---- |
+| 1 | User-Add |
+| 2 | User-Edit |
+| 4 | User-Delete |
+| 8 | User-View |
+| 16  | Blog-Add |
+| 32  | Blog-Edit |
+| 64  | Blog-Delete |
+| 128 | Blog-View |
+
+
+### user
+
+| id | name | role |
+| -- | ---- | ---- |
+| 1 | Ketan | 65 |
+| 2 | Mehata | 132 |
+
+执行查询：
+
+```sql
+SELECT user.role, permission.bit, user.role & permission.bit as '位与运算', permission.name  
+   FROM user LEFT JOIN permission ON user.role & permission.bit
+ WHERE user.id = 2;
+```
+
+| role | bit | 位与运算 | name |
+| -- | ---- | ---- | ---- |
+| 132 | 4 | 4 | User-Delete |
+| 132 | 128 | 128 | Blog-View |
+
+```
+原理： 十进制转二进制后进行与运算  
+132 -> 1000 0100  
+4   -> 0000 0100  
+128 -> 1000 0000  
+
+132 & 4 = 4
+  1000 0100
+& 0000 0100
+-----------
+  0000 0100
+
+  132 & 128 = 128
+  1000 0100
+& 1000 0000
+-----------
+  1000 0000
+```
