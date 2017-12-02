@@ -2,7 +2,7 @@
 
 `汇集学习过程中比较实用的sql技巧`  
 
-- [事件Event](./event.md)
+- [事件Event](./Event.MD)
 
 ## Mysql
 
