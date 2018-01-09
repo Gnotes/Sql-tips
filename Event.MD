@@ -16,6 +16,10 @@ SELECT @@event_scheduler;
 SHOW PROCESSLIST; 
 -- ID   User            HOST      DB    COMMAND TIME  STATE                         INFO
 -- 3499 event_scheduler localhost NULL  Daemon  52    Waiting for next activation   NULL
+
+-- 查看所有事件
+
+SHOW EVENTS;
 ```
 
 ### 开启任务
